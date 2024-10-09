@@ -49,13 +49,14 @@ export const SignUpCredentialInfoLabelData:SignUpPageLabelDataValues[] = [
 ]
 
 export interface CredentialInfoProps {
-  onSubmit:() => void,
+  onSubmit:(password:string) => void,
   moveBack:() => void,
   buttonLoader:boolean,
-  regError:boolean
+  regError:boolean,
+  formatError:boolean
 }
 
-const CredentialInfo = ({onSubmit, moveBack,buttonLoader,regError}:CredentialInfoProps) => {
+const CredentialInfo = ({onSubmit, moveBack,buttonLoader,regError,formatError}:CredentialInfoProps) => {
 
   const [data, setData] = useState<Array<{ id: string; type: string; format:FieldValidationType; value: string | string[] | number; error: 'EMPTY' | 'FORMAT' | null }>>(
     SignUpCredentialInfoLabelData.map((field: SignUpPageLabelDataValues) => ({
@@ -200,7 +201,7 @@ const CredentialInfo = ({onSubmit, moveBack,buttonLoader,regError}:CredentialInf
     e.preventDefault();
     if (!submitValidate()) return;
     console.log("Answer Data :", data);
-    onSubmit();
+    onSubmit(data[1].value as string);
     onApi();
   }
 
@@ -218,6 +219,12 @@ const CredentialInfo = ({onSubmit, moveBack,buttonLoader,regError}:CredentialInf
           <AlertIcon />
           User already registered
         </Alert>
+      }
+      {
+        formatError && <Alert borderRadius={"4px"} mb={"20px"} status='error' color={"#000"}>
+        <AlertIcon />
+        Country code is missing in mobile number
+      </Alert>
       }
 
         {/* Sign Up Page Input Field */}

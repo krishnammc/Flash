@@ -21,13 +21,10 @@ export const auth = defineAuth({
   accountRecovery: 'EMAIL_ONLY',
 
   userAttributes: {
-    
-    preferredUsername: {
+    email:{
       mutable: true,
-      required: false
-    },email:{
-      mutable: true,
-      required: true
+      required: true,
+      
     },
     familyName:{
       mutable: true,
@@ -36,16 +33,17 @@ export const auth = defineAuth({
       mutable: true,
       required: false
     }, phoneNumber:{
+     
       mutable: true,
       required: false
     },
-    'custom:role':{
+    "custom:role":{
       dataType:"String",
       mutable:true,
       maxLen:10,
       minLen:1
     }, 
-    'custom:company_name':{
+    "custom:company_name":{
       dataType:"String",
       mutable:true,
       maxLen:30,

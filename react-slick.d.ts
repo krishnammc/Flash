@@ -12,7 +12,9 @@ declare module 'react-slick' {
     customPaging?: (index: number) => JSX.Element;
     appendDots?: (dots: JSX.Element) => JSX.Element;
     [key: string]: any;
-  }
+  } 
+
+  
 
   const Slider: ComponentType<Settings>;
 

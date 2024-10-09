@@ -91,7 +91,7 @@ export const helvetica = localFont({
     {
       path: '../../public/fonts/Helvetica/HelveticaNeue-Regular.otf',
       weight: '400'
-    },
+    },      
     {
       path: '../../public/fonts/Helvetica/HelveticaNeue-Medium.otf',
       weight: '500'

@@ -110,9 +110,9 @@ const SignUpPage = () => {
       options: {
         userAttributes: {
           email: basicstore !== null && basicstore !== undefined && basicstore.email ? basicstore.email as string : "",
-          family_name:basicstore !== null && basicstore !== undefined && basicstore.first_name ? basicstore.first_name as string : "",
-          given_name:basicstore !== null && basicstore !== undefined && basicstore.last_name ? basicstore.last_name as string : "",
-          phone_number:basicstore !== null && basicstore !== undefined && basicstore.phone_number ? basicstore.phone_number as string : "",
+          familyName:basicstore !== null && basicstore !== undefined && basicstore.first_name ? basicstore.first_name as string : "",
+          givenName:basicstore !== null && basicstore !== undefined && basicstore.last_name ? basicstore.last_name as string : "",
+          phoneNumber:basicstore !== null && basicstore !== undefined && basicstore.phone_number ? basicstore.phone_number as string : "",
           'custom:company_name': basicstore !== null && basicstore !== undefined && basicstore.company_name ? basicstore.company_name as string : "",
         },
         autoSignIn:true

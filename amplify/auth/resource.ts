@@ -25,6 +25,19 @@ export const auth = defineAuth({
     preferredUsername: {
       mutable: true,
       required: false
+    },email:{
+      mutable: true,
+      required: true
+    },
+    familyName:{
+      mutable: true,
+      required: false
+    },givenName:{
+      mutable: true,
+      required: false
+    }, phoneNumber:{
+      mutable: true,
+      required: false
     },
     'custom:role':{
       dataType:"String",

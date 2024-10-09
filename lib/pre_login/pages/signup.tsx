@@ -98,12 +98,8 @@ const SignUpPage = () => {
 
  const SubmitedCredentialInfo = async () => {
   setButtonLoader(true)
-  return new Promise((resolve, reject) => {
-    
-   
-    // ... validate inputs
-
-    signUp({
+  try {
+    const  response = await signUp({
       username: basicstore !== null && basicstore !== undefined && basicstore.email ? basicstore.email as string : "",
       password: store !== null && store !== undefined && store.confirm_password ? store.confirm_password as string : "",
 
@@ -119,39 +115,94 @@ const SignUpPage = () => {
       }
     })
     .then((response) => {
-      resolve(response);
+      console.log(response);
       setCredentialInfo(false);
       setEmailVerified(true);
       setButtonLoader(false);
     })
-    .catch((error) => {
-      if (error instanceof Error) {
-        console.log(error)
-        setCredentialInfo(false);
-      setEmailVerified(true);
-        if(error.name=="UsernameExistsException"){
-          setRegError(true);
-          // toast({
-          //   title: 'Already Registered',
-          //   description: "this user details is already registered",
-          //   status: 'error',
-          //   duration: 9000,
-          //   position:'top',
-          //   isClosable: true,
-          // });
-          setButtonLoader(false);
-        }
+    
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error)
+      // setCredentialInfo(false);
+    // setEmailVerified(true);
+      if(error.name=="UsernameExistsException"){
+        setRegError(true);
+        // toast({
+        //   title: 'Already Registered',
+        //   description: "this user details is already registered",
+        //   status: 'error',
+        //   duration: 9000,
+        //   position:'top',
+        //   isClosable: true,
+        // });
         setButtonLoader(false);
-        
-      } else {
-        console.log(`Unknown error: ${error}`);
-        setButtonLoader(false);
-        setCredentialInfo(false);
-        setEmailVerified(true);
       }
-      // reject(error);
-    });
-  });
+      setButtonLoader(false);
+      
+    } else {
+      console.log(`Unknown error: ${error}`);
+      setButtonLoader(false);
+      setRegError(true);
+      // setCredentialInfo(false);
+      // setEmailVerified(true);
+    }
+    // Display an error message to the user
+  }
+  // return new Promise((resolve, reject) => {
+    
+   
+  //   // ... validate inputs
+
+  //   signUp({
+  //     username: basicstore !== null && basicstore !== undefined && basicstore.email ? basicstore.email as string : "",
+  //     password: store !== null && store !== undefined && store.confirm_password ? store.confirm_password as string : "",
+
+  //     options: {
+  //       userAttributes: {
+  //         email: basicstore !== null && basicstore !== undefined && basicstore.email ? basicstore.email as string : "",
+  //         family_name:basicstore !== null && basicstore !== undefined && basicstore.first_name ? basicstore.first_name as string : "",
+  //         given_name:basicstore !== null && basicstore !== undefined && basicstore.last_name ? basicstore.last_name as string : "",
+  //         phone_number:basicstore !== null && basicstore !== undefined && basicstore.phone_number ? basicstore.phone_number as string : "",
+  //         'custom:company_name': basicstore !== null && basicstore !== undefined && basicstore.company_name ? basicstore.company_name as string : "",
+  //       },
+  //       autoSignIn:true
+  //     }
+  //   })
+  //   .then((response) => {
+  //     resolve(response);
+  //     setCredentialInfo(false);
+  //     setEmailVerified(true);
+  //     setButtonLoader(false);
+  //   })
+  //   .catch((error) => {
+  //     if (error instanceof Error) {
+  //       console.log(error)
+  //       setCredentialInfo(false);
+  //     setEmailVerified(true);
+  //       if(error.name=="UsernameExistsException"){
+  //         setRegError(true);
+  //         // toast({
+  //         //   title: 'Already Registered',
+  //         //   description: "this user details is already registered",
+  //         //   status: 'error',
+  //         //   duration: 9000,
+  //         //   position:'top',
+  //         //   isClosable: true,
+  //         // });
+  //         setButtonLoader(false);
+  //       }
+  //       setButtonLoader(false);
+        
+  //     } else {
+  //       console.log(`Unknown error: ${error}`);
+  //       setButtonLoader(false);
+  //       setCredentialInfo(false);
+  //       setEmailVerified(true);
+  //     }
+  //     // reject(error);
+  //   });
+  // });
  }
 
  const handleEmailVerified = () => {

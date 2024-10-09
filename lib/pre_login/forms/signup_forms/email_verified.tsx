@@ -100,7 +100,7 @@ const Emailverified = ({email,buttonLoader,setButtonLoader,flag=false}:{email:st
            resolve(response);
            await autoSignIn();
            
-           router.push('/home');
+           router.push('/login');
            console.log('Auto signed in successfully!');
            sessionStorage.removeItem('Basic Info Form Values');
            sessionStorage.removeItem('Credential Info Form Values');

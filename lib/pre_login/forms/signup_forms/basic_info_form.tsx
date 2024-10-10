@@ -36,8 +36,8 @@ export const SignUpBasicInfoLabelData:SignUpPageLabelDataValues[] = [
     id: 'company_name',
     type: 'TEXT',
     label: 'Company Name',
-    help_text: 'Input your Last Name',
-    error_message: 'Please enter Last Name',
+    help_text: 'Input your Company Name',
+    error_message: 'Please enter Company Name',
     format_error_message: 'Company Name should not contain numbers or any special characters',
     format_validation: "TEXT_ONLY",
     values: []

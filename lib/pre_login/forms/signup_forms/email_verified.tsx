@@ -8,7 +8,7 @@ import { PRE_LOGIN_PAGE_HEADING_TEXT_COLOR, PRE_LOGIN_PAGE_HEADING_FONT_FAMILY, 
 import { SignUpPageLabelDataValues } from '@/lib/interfaces/incorporation/pre_login_form/interfaces';
 import { autoSignIn, confirmSignUp, confirmUserAttribute, resendSignUpCode, signIn } from 'aws-amplify/auth';
 import useSessionStorage from '@/lib/hooks/use_sessionstorage';
-import { error } from 'console';
+
 import outputs from "@/amplify_outputs.json";
 import { Amplify } from 'aws-amplify';
 

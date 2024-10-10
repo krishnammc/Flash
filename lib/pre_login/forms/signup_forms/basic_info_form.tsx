@@ -9,6 +9,7 @@ import ButtonField from '../../components/button_field';
 import useSessionStorage from '@/lib/hooks/use_sessionstorage';
 import { SignUpPageLabelDataValues } from '@/lib/interfaces/incorporation/pre_login_form/interfaces';
 import { fonts } from '@/lib/app/chakra_theme';
+import { PhoneNumberField } from '@aws-amplify/ui-react';
 
 export const SignUpBasicInfoLabelData:SignUpPageLabelDataValues[] = [
   {
@@ -16,8 +17,8 @@ export const SignUpBasicInfoLabelData:SignUpPageLabelDataValues[] = [
     type: 'TEXT',
     label: 'First Name',
     help_text: 'Input your First Name',
-    error_message: 'Please Enter First Name',
-    format_error_message: 'First Name contains Letters Only',
+    error_message: 'Please enter First Name',
+    format_error_message: 'First Name should not contain numbers or any special characters',
     format_validation: "TEXT_ONLY",
     values: []
   },
@@ -26,8 +27,8 @@ export const SignUpBasicInfoLabelData:SignUpPageLabelDataValues[] = [
     type: 'TEXT',
     label: 'Last Name',
     help_text: 'Input your Last Name',
-    error_message: 'Please Enter Last Name',
-    format_error_message: 'Last Name contains Letters Only',
+    error_message: 'Please enter Last Name',
+    format_error_message: 'Last Name should not contain numbers or any special characters',
     format_validation: "TEXT_ONLY",
     values: []
   },
@@ -36,8 +37,8 @@ export const SignUpBasicInfoLabelData:SignUpPageLabelDataValues[] = [
     type: 'TEXT',
     label: 'Company Name',
     help_text: 'Input your Last Name',
-    error_message: 'Please Enter Last Name',
-    format_error_message: 'Company Name Contains Letters only',
+    error_message: 'Please enter Last Name',
+    format_error_message: 'Company Name should not contain numbers or any special characters',
     format_validation: "TEXT_ONLY",
     values: []
   },
@@ -45,9 +46,9 @@ export const SignUpBasicInfoLabelData:SignUpPageLabelDataValues[] = [
     id: 'designation',
     type: 'TEXT',
     label: 'Designation',
-    help_text: 'Input your desination',
-    error_message: 'Please Enter Designation',
-    format_error_message: 'Designation Contains Letters only',
+    help_text: 'Input your Designation',
+    error_message: 'Please enter Designation',
+    format_error_message: 'Designation should not contain numbers or any special characters',
     format_validation: "TEXT_ONLY",
     values: []
   },
@@ -56,8 +57,8 @@ export const SignUpBasicInfoLabelData:SignUpPageLabelDataValues[] = [
     type: 'TEXT',
     label: 'Email',
     help_text: 'Input your Email',
-    error_message: 'Please Enter Email',
-    format_error_message: 'Email Contains Letters only',
+    error_message: 'Please enter Email',
+    format_error_message: 'Email should be in email format(eg:test@gmail.com)',
     format_validation: "EMAIL",
     values: []
   },
@@ -66,8 +67,8 @@ export const SignUpBasicInfoLabelData:SignUpPageLabelDataValues[] = [
     type: 'TEXT',
     label: 'Phone Number',
     help_text: 'Input your Phone Number',
-    error_message: 'Please Enter Phone Number',
-    format_error_message: 'Phone Number Contains Numbers only',
+    error_message: 'Please enter Phone Number',
+    format_error_message: 'Phone Number should not contain text or any special characters',
     format_validation: "NONE",
     values: []
   }
@@ -154,7 +155,7 @@ const BasicInfoForm = ({onSubmit,buttonLoader}:BasicInfoProps) => {
     onSubmit();
     onApi();
   }
-
+console.log(data)
   return (
     <>
       <Flex flexDir = {'column'} gap = {['4px', '4px', '16px']} color = {PRE_LOGIN_PAGE_HEADING_TEXT_COLOR}>
@@ -179,9 +180,24 @@ const BasicInfoForm = ({onSubmit,buttonLoader}:BasicInfoProps) => {
               case "TEXT":
                 return (
                   <GridItem colSpan = {[2, 2, 1]} key = {e.id}>
-                    <TextField label = {e.label} value = {stateValue} placeholder = {e.help_text} format = {e.format_validation} inputProps = {{ onChange: event => onChange(event, e.id, e) }} isInValid = {isInValid} errorMessage = {errorMessage} />
+                    <TextField label = {e.label} req={true} value = {stateValue} placeholder = {e.help_text} format = {e.format_validation} inputProps = {{ onChange: event => onChange(event, e.id, e) }} isInValid = {isInValid} errorMessage = {errorMessage} />
                   </GridItem>
                 );
+              case "PHONE" :
+                return(
+                  <GridItem colSpan = {[2, 2, 1]} key = {e.id}>
+                   <PhoneNumberField
+                      defaultDialCode="+91"
+                      label="Phone number"
+                      onChange={ (event)=>onChange(event, e.id, e) }
+                      value={stateValue}
+                      descriptiveText="Please enter your phone number"
+                      placeholder="234-567-8910"
+                    />
+                  </GridItem>
+
+                 
+                )
             }
           })
         }

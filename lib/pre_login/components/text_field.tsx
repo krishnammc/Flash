@@ -17,10 +17,11 @@ export interface fields {
   format?:FieldValidationType,
   errorMessage?: string | null,
   w?:string,
-  h?:string
+  h?:string,
+  req?:boolean,
 }
 
-const TextField = ({label, type, value, values, placeholder, inputProps, format, isInValid, errorMessage, w = "100%", h = "44px"}:fields) => {
+const TextField = ({label, type, value, values, placeholder, inputProps, format, isInValid, errorMessage, w = "100%", h = "44px",req=false}:fields) => {
   const [show, setShow] = useState(false);
 
   //Password Hide and Show Function
@@ -29,7 +30,7 @@ const TextField = ({label, type, value, values, placeholder, inputProps, format,
   return (
     <FormControl  gap = {'4px'} isInvalid = {isInValid}>
       { label && 
-      <FormLabel title = {'Montserrat Medium 16px'} fontFamily = {PRE_LOGIN_LABEL_TEXT_FONT_FAMILY} fontSize = {PRE_LOGIN_LABEL_TEXT_FONT_SIZE} fontWeight = {PRE_LOGIN_LABEL_TEXT_FONT_WEIGHT}>{label}</FormLabel>
+      <FormLabel title = {'Montserrat Medium 16px'} fontFamily = {PRE_LOGIN_LABEL_TEXT_FONT_FAMILY} fontSize = {PRE_LOGIN_LABEL_TEXT_FONT_SIZE} fontWeight = {PRE_LOGIN_LABEL_TEXT_FONT_WEIGHT}>{label} {req && <span style={{color:"red"}}>*</span>}</FormLabel>
       }
       { (format == "PASSWORD" || format == "CONFIRM_PASSWORD") ?
         <InputGroup maxW = {w} w = {'100%'} h = {h} borderWidth = {'1px'}  borderRadius = {'6px'} borderColor = {PRE_LOGIN_INPUT_BORDER_COLOR}>

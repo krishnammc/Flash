@@ -1,4 +1,4 @@
-export type DynamicInputFieldType = 'TEXT' | 'RADIO' | 'SELECT' | 'TEXTAREA' | 'CHECKBOX' | 'DATE' | 'FILE';
+export type DynamicInputFieldType = 'TEXT' | 'RADIO' | 'SELECT' | 'TEXTAREA' | 'CHECKBOX' | 'DATE' | 'FILE' | 'PHONE';
 export type FieldValidationType = "PASSWORD" |"TEXT_ONLY"| 'EMAIL' |"NONE" | "NUMBER" | "CONFIRM_PASSWORD";
 
 export interface LoginPageLabelDataValues {

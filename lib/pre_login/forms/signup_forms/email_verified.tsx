@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { validateField } from '@/lib/utlils/utill_methods';
 import { useRouter } from 'next/navigation';
 import ButtonField from '../../components/button_field';
 import TextField from '../../components/text_field';
-import { Alert, AlertIcon, Flex, GridItem, Heading, SimpleGrid, Text, useToast } from '@chakra-ui/react';
-import { PRE_LOGIN_PAGE_HEADING_TEXT_COLOR, PRE_LOGIN_PAGE_HEADING_FONT_FAMILY, PRE_LOGIN_PAGE_HEADING_FONT_SIZE, PRE_LOGIN_PAGE_HEADING_FONT_WEIGHT, PRE_LOGIN_PAGE_SUB_HEADING_FONT_FAMILY, PRE_LOGIN_PAGE_SUB_HEADING_FONT_SIZE, PRE_LOGIN_PAGE_SUB_HEADING_FONT_WEIGHT, PRE_LOGIN_PAGE_BODY_FONT_FAMILY, PRE_LOGIN_PAGE_BODY_FONT_SIZE, PRE_LOGIN_PAGE_BODY_FONT_WEIGHT } from '@/lib/app/app_constants';
+import { Alert, AlertIcon, Button, Flex, GridItem, Heading, SimpleGrid, Text, useToast } from '@chakra-ui/react';
+import { PRE_LOGIN_PAGE_HEADING_TEXT_COLOR, PRE_LOGIN_PAGE_HEADING_FONT_FAMILY, PRE_LOGIN_PAGE_HEADING_FONT_SIZE, PRE_LOGIN_PAGE_HEADING_FONT_WEIGHT, PRE_LOGIN_PAGE_SUB_HEADING_FONT_FAMILY, PRE_LOGIN_PAGE_SUB_HEADING_FONT_SIZE, PRE_LOGIN_PAGE_SUB_HEADING_FONT_WEIGHT, PRE_LOGIN_PAGE_BODY_FONT_FAMILY, PRE_LOGIN_PAGE_BODY_FONT_SIZE, PRE_LOGIN_PAGE_BODY_FONT_WEIGHT, PRE_LOGIN_ALTERNATE_BUTTON_BACKGROUND_COLOR, PRE_LOGIN_ALTERNATE_BUTTON_TEXT_COLOR, PRE_LOGIN_BUTTON_BORDER_COLOR, PRE_LOGIN_BUTTON_TEXT_FONT_FAMILY, PRE_LOGIN_BUTTON_TEXT_FONT_SIZE, PRE_LOGIN_BUTTON_TEXT_FONT_WEIGHT, BUTTON_LINEAR_LEFT_COLOR, BUTTON_LINEAR_RIGHT_COLOR, PRE_LOGIN_BUTTON_TEXT_COLOR } from '@/lib/app/app_constants';
 import { SignUpPageLabelDataValues } from '@/lib/interfaces/incorporation/pre_login_form/interfaces';
 import { autoSignIn, confirmSignUp, confirmUserAttribute, resendSignUpCode, signIn } from 'aws-amplify/auth';
 import useSessionStorage from '@/lib/hooks/use_sessionstorage';
@@ -29,10 +29,12 @@ export const SignUpPasswordEnterData:SignUpPageLabelDataValues[] = [
   }
 ]
 
-const Emailverified = ({email,buttonLoader,setButtonLoader,flag=false}:{email:string,buttonLoader:boolean,setButtonLoader:(data:boolean)=>void,flag?:boolean}) => {
+const Emailverified = ({email,buttonLoader,setButtonLoader,flag=false,setVerified}:{email:string,buttonLoader:boolean,setButtonLoader:(data:boolean)=>void,flag?:boolean,setVerified:(data:boolean)=>void}) => {
   const router = useRouter();
   const toast = useToast();
   const [codeError,setCodeError]=useState(false);
+  const [timer,setTimer]=useState<boolean>(true);
+  const [timerDuration, setTimerDuration] = useState<number>(300);
   
   const [data, setData] = useState(
     SignUpPasswordEnterData.map((field:SignUpPageLabelDataValues) => {
@@ -45,6 +47,27 @@ const Emailverified = ({email,buttonLoader,setButtonLoader,flag=false}:{email:st
       }
     })
   );
+
+  const minutes = Math.floor(timerDuration / 60);
+  const seconds = timerDuration % 60;
+
+  useEffect(() => {
+
+        
+    if(minutes==0 && seconds==0 && timer == true){
+      setTimer(false);
+    }
+
+    if(timerDuration>0){
+      setTimeout(() => {
+        setTimerDuration(timerDuration - 1);
+      }, 1000);
+      // return () => {
+      //   clearTimeout(timerId);
+      // };
+    }
+  
+  },[timerDuration]);
   //console.log("Initial Data :", data);
   const [basicstore, setBasicStorage] = useSessionStorage<Record<string, string | string[] | number> | null>('Basic Info Form Values');
   const [store, setStorage] = useSessionStorage<Record<string, string | string[] | number> | null>('Credential Info Form Values');
@@ -98,9 +121,9 @@ const Emailverified = ({email,buttonLoader,setButtonLoader,flag=false}:{email:st
          confirmationCode: data[0].value as string
        }).then(async (response)=>{
            resolve(response);
-           await autoSignIn();
-           
-           router.push('/login');
+          //  await autoSignIn();
+          //  setVerified(true)
+           router.push('/client/login');
            console.log('Auto signed in successfully!');
            sessionStorage.removeItem('Basic Info Form Values');
            sessionStorage.removeItem('Credential Info Form Values');
@@ -113,6 +136,7 @@ const Emailverified = ({email,buttonLoader,setButtonLoader,flag=false}:{email:st
               setCodeError(true)
               setButtonLoader(false)
             } else {
+              // setVerified(true)
               router.push("/client/login")
             }
           } 
@@ -144,8 +168,9 @@ const Emailverified = ({email,buttonLoader,setButtonLoader,flag=false}:{email:st
       confirmationCode: data[0].value as string
     }).then(async (response)=>{
         resolve(response);
-        await autoSignIn();
-        router.push('/home');
+        // await autoSignIn();
+        // router.push('/home');
+        setVerified(true)
         console.log('Auto signed in successfully!');
         sessionStorage.removeItem('Basic Info Form Values');
         sessionStorage.removeItem('Credential Info Form Values');
@@ -154,7 +179,6 @@ const Emailverified = ({email,buttonLoader,setButtonLoader,flag=false}:{email:st
     }).catch((error)=>{
       console.log(error)
       if (error instanceof Error) {
-  
         setCodeError(true)
         setButtonLoader(false)
       }
@@ -206,8 +230,8 @@ console.log(data)
   return (
     <>
     <Flex flexDir = {'column'} gap = {['4px', '4px', '16px']} color = {PRE_LOGIN_PAGE_HEADING_TEXT_COLOR}>
-      <Heading fontFamily = {PRE_LOGIN_PAGE_HEADING_FONT_FAMILY} fontSize = {PRE_LOGIN_PAGE_HEADING_FONT_SIZE} fontWeight = {PRE_LOGIN_PAGE_HEADING_FONT_WEIGHT}>Enter your password</Heading>
-      <Text fontFamily = {PRE_LOGIN_PAGE_SUB_HEADING_FONT_FAMILY} fontSize = {PRE_LOGIN_PAGE_SUB_HEADING_FONT_SIZE} fontWeight = {PRE_LOGIN_PAGE_SUB_HEADING_FONT_WEIGHT}>Your email has been verified. Please enter the password for the account associated with {email} to proceed with login.</Text>
+      <Heading fontFamily = {PRE_LOGIN_PAGE_HEADING_FONT_FAMILY} fontSize = {PRE_LOGIN_PAGE_HEADING_FONT_SIZE} fontWeight = {PRE_LOGIN_PAGE_HEADING_FONT_WEIGHT}>Enter your Verification code</Heading>
+      <Text fontFamily = {PRE_LOGIN_PAGE_SUB_HEADING_FONT_FAMILY} fontSize = {PRE_LOGIN_PAGE_SUB_HEADING_FONT_SIZE} fontWeight = {PRE_LOGIN_PAGE_SUB_HEADING_FONT_WEIGHT}>Enter the 6-digit code sent to your {email} email.</Text>
     </Flex>
 
     <form onSubmit = {handleSubmit}>
@@ -253,16 +277,29 @@ console.log(data)
       
     </form>
     <Flex flexDir = {'column'}  fontFamily = {PRE_LOGIN_PAGE_BODY_FONT_FAMILY} fontSize = {PRE_LOGIN_PAGE_BODY_FONT_SIZE} fontWeight = {PRE_LOGIN_PAGE_BODY_FONT_WEIGHT} w= '100%' justifyContent = {'center'} alignItems={'center'} gap = {'12px'}>
-          <Text >Don’t receive the email? try again
-          </Text>
+          {/* <Text >Don’t receive the email? try again
+          </Text> */}
 
           {/* <Button onClick = {resendConfirmationCode} w = {'100%'} h = {'40px'} borderWidth = {'1px'} borderColor = {PRE_LOGIN_BUTTON_BORDER_COLOR} borderRadius = {'4px'} bg = {PRE_LOGIN_ALTERNATE_BUTTON_BACKGROUND_COLOR}  >
             <Text color = {PRE_LOGIN_ALTERNATE_BUTTON_TEXT_COLOR} fontFamily = {PRE_LOGIN_BUTTON_TEXT_FONT_FAMILY} fontSize = {PRE_LOGIN_BUTTON_TEXT_FONT_SIZE} fontWeight = {PRE_LOGIN_BUTTON_TEXT_FONT_WEIGHT}>Resend Code</Text>
           </Button>  */}
 
-        <Flex onClick = {resendConfirmationCode} w={"100%"}>
+<Flex flexDir = {'column'} gap = {'24px'} mt = {'-16px'} justifyContent = {'center'} alignItems = {'center'}>
+         
+         <Flex flexDir = {'row'} fontFamily ={PRE_LOGIN_PAGE_BODY_FONT_FAMILY} fontSize = {PRE_LOGIN_PAGE_BODY_FONT_SIZE} fontWeight = {PRE_LOGIN_PAGE_BODY_FONT_WEIGHT} w= '100%' justifyContent = {'center'} gap = {'8px'}>
+           <Text >Don’t receive the email? Try again in</Text>
+           <Text fontWeight = {'700'}>Time: {minutes}:{seconds.toString().padStart(2, '0')} minutes</Text>
+         </Flex>
+
+         <Button w = {'100%'} h = {'40px'} borderWidth = {'1px'} isDisabled={ timerDuration > 0 } onClick={resendConfirmationCode} borderColor = {PRE_LOGIN_BUTTON_BORDER_COLOR} borderRadius = {'4px'}  bg={BUTTON_LINEAR_RIGHT_COLOR} _hover = {{ bgGradient: `linear(180deg, ${BUTTON_LINEAR_LEFT_COLOR}, ${BUTTON_LINEAR_RIGHT_COLOR})`}}  >
+           <Text color = {PRE_LOGIN_BUTTON_TEXT_COLOR} fontFamily = {PRE_LOGIN_BUTTON_TEXT_FONT_FAMILY} fontSize = {PRE_LOGIN_BUTTON_TEXT_FONT_SIZE} fontWeight = {PRE_LOGIN_BUTTON_TEXT_FONT_WEIGHT}>Resend Code</Text>
+         </Button>
+
+       </Flex>
+
+        {/* <Flex onClick = {resendConfirmationCode} w={"100%"}>
           <ButtonField textValue = {"Resend Email"} />
-        </Flex>
+        </Flex> */}
         
       </Flex>
   </>

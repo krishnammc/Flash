@@ -19,7 +19,7 @@ export const LoginLabelData: LoginPageLabelDataValues[] = [
     id: "email",
     type: "TEXT",
     label: "Email",
-    help_text: "Input your Email Address",
+    help_text: "Input your Email address",
     error_message: "Email address is required for login",
     format_error_message: "Please enter an email using the standard format (e.g., example@domain.com)",
     format_validation: "EMAIL"

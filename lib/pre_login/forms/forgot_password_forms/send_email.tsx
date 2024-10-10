@@ -21,8 +21,8 @@ export const ForgotPasswordLabelData: ForgotPasswordPageLabelDataValues[] = [
     id: "email",
     type: "TEXT",
     label: "Email",
-    help_text: "Input your Email Address",
-    error_message: "Email address is required for login",
+    help_text: "Input your Email address",
+    error_message: "Enter your Email address",
     format_error_message: "Please enter an email using the standard format (e.g., example@domain.com)",
     format_validation: "EMAIL",
     values: []

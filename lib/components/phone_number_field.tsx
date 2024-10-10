@@ -28,7 +28,8 @@ const PhoneNumberField = ({label, helpText, textHelpText, values, h = '44px', re
               <Text as = {'span'} fontSize = {LABEL_TEXT_FONT_SIZE} fontWeight = {LABEL_TEXT_FONT_WEIGHT} color = {REQUIRED_SYMBOL_COLOR}>*</Text>
             </ResponsiveTooltip> : <></>
           }
-          { toolTip?.length !== 0 && toolTip == "Question" ?
+          {
+           toolTip?.length !== 0 && toolTip == "Question" ?
             <ResponsiveTooltip label = {toolTip} placement = 'auto' wrapperDivProps = {{ ml: '5px' }}>
               <FaRegQuestionCircle  fontSize = {LIST_TEXT_FONT_SIZE} cursor = {'pointer'} height = {'auto'} width = {'auto'}/>
             </ResponsiveTooltip> : <></>

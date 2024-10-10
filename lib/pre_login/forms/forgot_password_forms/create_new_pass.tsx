@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import TextField from '../../components/text_field';
-import { BUTTON_BG, HEADING_FONT_SIZE, INPUT_TEXT_COLOR, LABEL_TEXT_FONT_SIZE, LABEL_TEXT_FONT_WEIGHT, LOGIN_INPUT_FIELD_PADDING, SUB_HEADING_FONT_SIZE, INPUT_BORDER_COLOR, TEXT_FONT_SIZE, TEXT_FONT_WEIGHT, PRE_LOGIN_PAGE_HEADING_FONT_FAMILY, PRE_LOGIN_PAGE_HEADING_FONT_SIZE, PRE_LOGIN_PAGE_HEADING_FONT_WEIGHT, PRE_LOGIN_PAGE_HEADING_TEXT_COLOR, PRE_LOGIN_PAGE_SUB_HEADING_FONT_FAMILY, PRE_LOGIN_PAGE_SUB_HEADING_FONT_SIZE, PRE_LOGIN_PAGE_SUB_HEADING_FONT_WEIGHT, PRE_LOGIN_PAGE_BODY_FONT_FAMILY, PRE_LOGIN_PAGE_BODY_FONT_SIZE, PRE_LOGIN_PAGE_BODY_FONT_WEIGHT } from '@/lib/app/app_constants';
-import { Alert, AlertIcon, Flex, FormControl, FormErrorMessage, FormLabel, GridItem, Heading, Input, SimpleGrid, Text, useToast } from '@chakra-ui/react';
+import { BUTTON_BG, HEADING_FONT_SIZE, INPUT_TEXT_COLOR, LABEL_TEXT_FONT_SIZE, LABEL_TEXT_FONT_WEIGHT, LOGIN_INPUT_FIELD_PADDING, SUB_HEADING_FONT_SIZE, INPUT_BORDER_COLOR, TEXT_FONT_SIZE, TEXT_FONT_WEIGHT, PRE_LOGIN_PAGE_HEADING_FONT_FAMILY, PRE_LOGIN_PAGE_HEADING_FONT_SIZE, PRE_LOGIN_PAGE_HEADING_FONT_WEIGHT, PRE_LOGIN_PAGE_HEADING_TEXT_COLOR, PRE_LOGIN_PAGE_SUB_HEADING_FONT_FAMILY, PRE_LOGIN_PAGE_SUB_HEADING_FONT_SIZE, PRE_LOGIN_PAGE_SUB_HEADING_FONT_WEIGHT, PRE_LOGIN_PAGE_BODY_FONT_FAMILY, PRE_LOGIN_PAGE_BODY_FONT_SIZE, PRE_LOGIN_PAGE_BODY_FONT_WEIGHT, BUTTON_LINEAR_LEFT_COLOR, BUTTON_LINEAR_RIGHT_COLOR, PRE_LOGIN_ALTERNATE_BUTTON_TEXT_COLOR, PRE_LOGIN_BUTTON_BORDER_COLOR, PRE_LOGIN_BUTTON_TEXT_FONT_FAMILY, PRE_LOGIN_BUTTON_TEXT_FONT_SIZE, PRE_LOGIN_BUTTON_TEXT_FONT_WEIGHT, PRE_LOGIN_BUTTON_TEXT_COLOR } from '@/lib/app/app_constants';
+import { Alert, AlertIcon, Button, Flex, FormControl, FormErrorMessage, FormLabel, GridItem, Heading, Input, SimpleGrid, Text, useToast } from '@chakra-ui/react';
 import { formatValidate, validateField } from '@/lib/utlils/utill_methods';
 import ButtonField from '../../components/button_field';
 import { FieldValidationType, ForgotPasswordPageLabelDataValues } from '@/lib/interfaces/incorporation/pre_login_form/interfaces';
@@ -17,7 +17,7 @@ export const ForgotPasswordPageLabelData:ForgotPasswordPageLabelDataValues[] = [
     label: 'Verification Code',
     values: [],
     help_text: 'Input your code',
-    error_message: "verfication Code should be entered",
+    error_message: "Enter the Verification code",
     format_error_message: "Password must be more than 8 characters. With a combination of Alphapetic Letters, Numbers and Special Characters ",
     format_validation: 'NONE'
   },{
@@ -27,7 +27,7 @@ export const ForgotPasswordPageLabelData:ForgotPasswordPageLabelDataValues[] = [
     values: [],
     help_text: 'Input your Password',
     error_message: "Password should be entered",
-    format_error_message: "Password must be more than 8 characters. With a combination of Alphapetic Letters, Numbers and Special Characters ",
+    format_error_message: "Password must be more than 8 characters. With a combination of alphapetic letters, numbers and special characters ",
     format_validation: 'PASSWORD'
   },
   {
@@ -37,24 +37,24 @@ export const ForgotPasswordPageLabelData:ForgotPasswordPageLabelDataValues[] = [
     values: [],
     help_text: 'Retype your Password',
     error_message: "Password should be entered",
-    format_error_message: "Your password doesn't Match",
+    format_error_message: "Your Password doesn't match",
     format_validation: 'CONFIRM_PASSWORD'
   },
-  {
-    id: 'agree_terms_and_conditions',
-    type: 'CHECKBOX',
-    label: '',
-    values: [
-      {
-        id: 'one',
-        value: 'By creating an account, I agree to Flash Accountant’s Terms & Conditions and Privacy Policy.'
-      }
-    ],
-    help_text: '',
-    error_message: 'Checkbox is Empty',
-    format_error_message: '',
-    format_validation: 'NONE'
-  }
+  // {
+  //   id: 'agree_terms_and_conditions',
+  //   type: 'CHECKBOX',
+  //   label: '',
+  //   values: [
+  //     {
+  //       id: 'one',
+  //       value: 'By creating an account, I agree to Flash Accountant’s Terms & Conditions and Privacy Policy.'
+  //     }
+  //   ],
+  //   help_text: '',
+  //   error_message: 'Checkbox is Empty',
+  //   format_error_message: '',
+  //   format_validation: 'NONE'
+  // }
 ]
 
 
@@ -69,6 +69,8 @@ export interface updatePassProps {
 const CreateNewPassword = ({onSubmit,buttonLoader,email,codeError,setCodeError}:updatePassProps) => {
  
   const toast = useToast();
+  const [timer,setTimer]=useState<boolean>(true);
+  const [timerDuration, setTimerDuration] = useState<number>(300);
  
   const [data, setData] = useState(
     ForgotPasswordPageLabelData.map((field:ForgotPasswordPageLabelDataValues) => {
@@ -83,11 +85,32 @@ const CreateNewPassword = ({onSubmit,buttonLoader,email,codeError,setCodeError}:
     })
   );
 
+
+  const minutes = Math.floor(timerDuration / 60);
+  const seconds = timerDuration % 60;
+
+  useEffect(() => {
+
+        
+    if(minutes==0 && seconds==0 && timer == true){
+      setTimer(false);
+    }
+
+    if(timerDuration>0){
+      setTimeout(() => {
+        setTimerDuration(timerDuration - 1);
+      }, 1000);
+      // return () => {
+      //   clearTimeout(timerId);
+      // };
+    }
+  
+  },[timerDuration]);
+
   const onChange = (event: React.ChangeEvent<HTMLInputElement>, id: string, field: ForgotPasswordPageLabelDataValues) => {
     const tempData: typeof data = JSON.parse(JSON.stringify(data));
     const index = tempData.findIndex((field) => field.id == id);
 
-    setCodeError(null)
     if (index < 0) return;
 
     const value: string = event.target.value;
@@ -101,16 +124,19 @@ const CreateNewPassword = ({onSubmit,buttonLoader,email,codeError,setCodeError}:
 
       const confirmPassIndex = tempData.findIndex((field) => field.format == 'CONFIRM_PASSWORD');
 
-      if (confirmPassIndex >= 0) {
-        const confirmPassValue = tempData[confirmPassIndex].value;
-        const confirmPassValidation = validateField(confirmPassValue.toString(), 'CONFIRM_PASSWORD', value);
-        tempData[confirmPassIndex].error = confirmPassValidation.isEmpty ? "EMPTY" : confirmPassValidation.isContainsFormatError ? "FORMAT" : null;
-      }
+      // if (confirmPassIndex >= 0) {
+      //   const confirmPassValue = tempData[confirmPassIndex].value;
+      //   const confirmPassValidation = validateField(confirmPassValue.toString(), 'CONFIRM_PASSWORD', value);
+      //   tempData[confirmPassIndex].error = confirmPassValidation.isEmpty ? "EMPTY" : confirmPassValidation.isContainsFormatError ? "FORMAT" : null;
+      // }
 
       tempData[index].error = (validateResult.isEmpty ? "EMPTY" : validateResult.isContainsFormatError ? "FORMAT" : null);
     } 
     //Confirm Password Validation
     else if (field.format_validation === 'CONFIRM_PASSWORD') {
+        // validateResult = validateField(value, 'CONFIRM_PASSWORD', value.toString());
+        // tempData[index].value = value;
+        // tempData[index].error = validateResult.isEmpty ? "EMPTY" : validateResult.isContainsFormatError ? "FORMAT" : null;
 
       const passwordIndex = tempData.findIndex((field) => field.format == 'PASSWORD');
       
@@ -133,8 +159,6 @@ const CreateNewPassword = ({onSubmit,buttonLoader,email,codeError,setCodeError}:
         tempData[index].value = value;
         tempData[index].error = validateResult.isEmpty ? "EMPTY" : validateResult.isContainsFormatError ? "FORMAT" : null;
       }
-
-
     }
     setData(tempData)
   }
@@ -225,7 +249,7 @@ const CreateNewPassword = ({onSubmit,buttonLoader,email,codeError,setCodeError}:
           position:'top',
           isClosable: true,
         });
-    
+        setTimerDuration(300)
         // Collect the confirmation code from the user and pass to confirmResetPassword.
         break;
       case 'DONE':
@@ -275,12 +299,12 @@ const CreateNewPassword = ({onSubmit,buttonLoader,email,codeError,setCodeError}:
                       <TextField label = {e.label} value = {stateValue} values = {e.values} placeholder = {e.help_text} format = {e.format_validation} inputProps = {{ onChange: event => onChange(event, e.id, e) }} isInValid = {isInValid} errorMessage = {errorMessage} h = {'44px'} />
                     </GridItem>
                   );
-                case "CHECKBOX" :
-                  return(
-                    <GridItem colSpan = {2} key = {e.id} >
-                      <CheckBox label = {e.label} value = {stateValue} values = {e.values} placeholder = {e.help_text} onChange = {(event, valueId) => onChangeCheckBox(event, e.id, e, valueId as string | number)} isInValid = {isInValid} errorMessage = {errorMessage} format = {'PASSWORD'}/>
-                    </GridItem>
-                  );
+                // case "CHECKBOX" :
+                //   return(
+                //     <GridItem colSpan = {2} key = {e.id} >
+                //       <CheckBox label = {e.label} value = {stateValue} values = {e.values} placeholder = {e.help_text} onChange = {(event, valueId) => onChangeCheckBox(event, e.id, e, valueId as string | number)} isInValid = {isInValid} errorMessage = {errorMessage} format = {'PASSWORD'}/>
+                //     </GridItem>
+                //   );
               }
             })
           }
@@ -288,7 +312,7 @@ const CreateNewPassword = ({onSubmit,buttonLoader,email,codeError,setCodeError}:
 
         {/* Verification Section */}
         <Flex mt = {'24px'}>
-          <ButtonField textValue = {'Sign Up'} buttonLoader={buttonLoader} />
+          <ButtonField textValue = {'Create Password'} buttonLoader={buttonLoader} />
         </Flex>
       </form>
       <Flex flexDir = {'column'}  fontFamily = {PRE_LOGIN_PAGE_BODY_FONT_FAMILY} fontSize = {PRE_LOGIN_PAGE_BODY_FONT_SIZE} fontWeight = {PRE_LOGIN_PAGE_BODY_FONT_WEIGHT} w= '100%' justifyContent = {'center'} alignItems={'center'} gap = {'12px'}>
@@ -299,9 +323,18 @@ const CreateNewPassword = ({onSubmit,buttonLoader,email,codeError,setCodeError}:
             <Text color = {PRE_LOGIN_ALTERNATE_BUTTON_TEXT_COLOR} fontFamily = {PRE_LOGIN_BUTTON_TEXT_FONT_FAMILY} fontSize = {PRE_LOGIN_BUTTON_TEXT_FONT_SIZE} fontWeight = {PRE_LOGIN_BUTTON_TEXT_FONT_WEIGHT}>Resend Code</Text>
           </Button>  */}
 
-        <Flex onClick = {resendConfirmationCode} w={"100%"}>
-          <ButtonField textValue = {"Resend Email"} />
-        </Flex>
+<Flex flexDir = {'column'} gap = {'24px'} mt = {'-16px'} justifyContent = {'center'} alignItems = {'center'}>
+         
+         <Flex flexDir = {'row'} fontFamily ={PRE_LOGIN_PAGE_BODY_FONT_FAMILY} fontSize = {PRE_LOGIN_PAGE_BODY_FONT_SIZE} fontWeight = {PRE_LOGIN_PAGE_BODY_FONT_WEIGHT} w= '100%' justifyContent = {'center'} gap = {'8px'}>
+           <Text >Don’t receive the email? Try again in</Text>
+           <Text fontWeight = {'700'}>Time: {minutes}:{seconds.toString().padStart(2, '0')} minutes</Text>
+         </Flex>
+
+         <Button w = {'100%'} h = {'40px'} borderWidth = {'1px'} isDisabled={ timerDuration > 0 } onClick={resendConfirmationCode} borderColor = {PRE_LOGIN_BUTTON_BORDER_COLOR} borderRadius = {'4px'}  bg={BUTTON_LINEAR_RIGHT_COLOR} _hover = {{ bgGradient: `linear(180deg, ${BUTTON_LINEAR_LEFT_COLOR}, ${BUTTON_LINEAR_RIGHT_COLOR})`}}  >
+           <Text color = {PRE_LOGIN_BUTTON_TEXT_COLOR} fontFamily = {PRE_LOGIN_BUTTON_TEXT_FONT_FAMILY} fontSize = {PRE_LOGIN_BUTTON_TEXT_FONT_SIZE} fontWeight = {PRE_LOGIN_BUTTON_TEXT_FONT_WEIGHT}>Resend Code</Text>
+         </Button>
+
+       </Flex>
         
       </Flex>
     </>

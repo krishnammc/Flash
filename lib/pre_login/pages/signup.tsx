@@ -14,6 +14,9 @@ import { Schema } from '@/amplify/data/resource';
 import outputs from "@/amplify_outputs.json";
 import { Hub } from 'aws-amplify/utils';
 
+import OTPValidationPage from './otp_validation';
+import VerifiedPage from '../forms/signup_forms/verified_page';
+
 
 Amplify.configure(outputs);
 
@@ -57,6 +60,7 @@ const SignUpPage = () => {
   const [credentialInfo, setCredentialInfo] = useState<boolean>(false);
   const [sentEmail, setSentEmail] = useState<boolean>(false);
   const [emailVerified, setEmailVerified] = useState<boolean>(false);
+  const [verfied,setVerified] =useState<boolean>(false)
   const [buttonLoader,setButtonLoader] = useState<boolean>(false);
   const [regError,setRegError]= useState<boolean>(false);
   const [demo,setDemo]=useState(false)
@@ -179,6 +183,7 @@ const SignUpPage = () => {
         userAttributes: {
           email: basicstore !== null && basicstore !== undefined && basicstore.email ? basicstore.email as string : "",
           family_name:basicstore !== null && basicstore !== undefined && basicstore.first_name ? basicstore.first_name as string : "",
+      
           given_name:basicstore !== null && basicstore !== undefined && basicstore.last_name ? basicstore.last_name as string : "",
           phone_number:basicstore !== null && basicstore !== undefined && basicstore.phone_number ? basicstore.phone_number as string : "",
           'custom:company_name': basicstore !== null && basicstore !== undefined && basicstore.company_name ? basicstore.company_name as string : "",
@@ -208,9 +213,17 @@ const SignUpPage = () => {
           //   isClosable: true,
           // });
           setButtonLoader(false);
+        } else {
+          toast({
+            title: 'Something went wrong',
+            description: "please try after sometime",
+            status: 'error',
+            duration: 9000,
+            position:'top',
+            isClosable: true,
+          });
+          setButtonLoader(false);
         }
-        setButtonLoader(false);
-        
       } else {
         console.log(`Unknown error: ${error}`);
         setButtonLoader(false);
@@ -238,12 +251,13 @@ const SignUpPage = () => {
  }
 
   return (
-   demo && <Flex flexDir = {'column'} w = {'100%'} h = {'fit-content'} justifyContent = {'center'} gap = {'40px'}>
+   <Flex flexDir = {'column'} w = {'100%'} h = {'fit-content'} justifyContent = {'center'} gap = {'40px'}>
       { basicInfo && <BasicInfoForm onSubmit = {SubmitedBasicInfo} buttonLoader={buttonLoader} /> }
       { addressInfo && <AddressInfoForm onSubmit = {SubmitedAddressInfo} moveBack = {BacktoBasicInfo} buttonLoader={buttonLoader} /> }
       { credentialInfo &&  <CredentialInfo onSubmit = {SubmitedCredentialInfo}  moveBack = {BacktoAddressInfo} formatError={formatError} regError={regError} buttonLoader={buttonLoader} /> }
       {/* { sentEmail && <CheckEmail email={basicstore !== null && basicstore !== undefined && basicstore.email ? basicstore.email as string : ""}  onSubmit = {handleEmailVerified}/> } */}
-      { emailVerified && <Emailverified email={basicstore !== null && basicstore !== undefined && basicstore.email ? basicstore.email as string : ""} setButtonLoader={setButtonLoader} buttonLoader={buttonLoader}  /> }
+      {/* { emailVerified && (verfied ? <VerifiedPage /> :<OTPValidationPage setVerified={setVerified} email={basicstore !== null && basicstore !== undefined && basicstore.email ? basicstore.email as string : ""} />)} */}
+      { emailVerified && (verfied ? <VerifiedPage /> : <Emailverified  setVerified={setVerified} email={basicstore !== null && basicstore !== undefined && basicstore.email ? basicstore.email as string : ""} setButtonLoader={setButtonLoader} buttonLoader={buttonLoader}  />) }
     </Flex>
   );
 }

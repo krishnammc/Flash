@@ -17,9 +17,9 @@ export const SignUpAddressInfoLabelData:SignUpPageLabelDataValues[] =[
     type: 'TEXTAREA',
     label: 'Address',
     values: [],
-    help_text: 'Input your Address',
-    error_message: 'Please Enter Address',
-    format_error_message: 'Address contains Letters Only',
+    help_text: 'Enter your Address',
+    error_message: 'Please enter your Address',
+    format_error_message: 'Address should not contain numbers or any special characters',
     format_validation: 'NONE'
   },
   {
@@ -37,7 +37,7 @@ export const SignUpAddressInfoLabelData:SignUpPageLabelDataValues[] =[
       }
     ],
     help_text: 'Select your Country',
-    error_message: 'Please Select your Country',
+    error_message: 'Please select the Country',
     format_error_message: 'Format Error Message',
     format_validation: 'NONE'
   },
@@ -48,7 +48,7 @@ export const SignUpAddressInfoLabelData:SignUpPageLabelDataValues[] =[
     values: [],
     help_text: 'Input yor Postal Code',
     error_message: 'Please Enter Postal Code',
-    format_error_message: 'Postal Code contains Numbers only',
+    format_error_message: 'Postal Code should contain only numbers',
     format_validation: 'NUMBER'
   }
 ]
@@ -195,19 +195,19 @@ const AddressInfoForm = ({onSubmit, moveBack,buttonLoader}:AddressInfoProps) => 
               case "TEXT":
                 return (
                   <GridItem colSpan = {[2, 2, 1]} key = {e.id}>
-                    <TextField label = {e.label} value = {stateValue} values = {e.values} placeholder = {e.help_text} format = {e.format_validation} inputProps = {{ onChange: event => onChange(event, e.id, e) }} isInValid = {isInValid} errorMessage = {errorMessage} />
+                    <TextField label = {e.label} req={true} value = {stateValue} values = {e.values} placeholder = {e.help_text} format = {e.format_validation} inputProps = {{ onChange: event => onChange(event, e.id, e) }} isInValid = {isInValid} errorMessage = {errorMessage} />
                   </GridItem>
                 );
                 case "SELECT":
                 return (
                   <GridItem colSpan = {[2, 2, 1]} key = {e.id}>
-                    <SelectField label = {e.label} value = {stateValue} values = {e.values} placeholder = {e.help_text} format = {e.format_validation} inputProps = {{ onChange: event => onChangeSelect(event, e.id, e) }} isInValid = {isInValid} errorMessage = {errorMessage} />
+                    <SelectField label = {e.label} req={true} value = {stateValue} values = {e.values} placeholder = {e.help_text} format = {e.format_validation} inputProps = {{ onChange: event => onChangeSelect(event, e.id, e) }} isInValid = {isInValid} errorMessage = {errorMessage} />
                   </GridItem>
                 );
                 case "TEXTAREA":
                 return (
                   <GridItem colSpan = {2} key = {e.id}>
-                    <TextareaField label = {e.label} value = {stateValue} values = {e.values} placeholder = {e.help_text} format = {e.format_validation} inputProps = {{ onChange: event => onChangeTextArea(event, e.id, e) }} isInValid = {isInValid} errorMessage = {errorMessage} />
+                    <TextareaField label = {e.label} req={true} value = {stateValue} values = {e.values} placeholder = {e.help_text} format = {e.format_validation} inputProps = {{ onChange: event => onChangeTextArea(event, e.id, e) }} isInValid = {isInValid} errorMessage = {errorMessage} />
                   </GridItem>
                 );
             }

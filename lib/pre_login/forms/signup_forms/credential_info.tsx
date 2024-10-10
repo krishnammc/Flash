@@ -104,16 +104,19 @@ const CredentialInfo = ({onSubmit, moveBack,buttonLoader,regError,formatError}:C
 
       const confirmPassIndex = tempData.findIndex((field) => field.format == 'CONFIRM_PASSWORD');
 
-      if (confirmPassIndex >= 0) {
-        const confirmPassValue = tempData[confirmPassIndex].value;
-        const confirmPassValidation = validateField(confirmPassValue.toString(), 'CONFIRM_PASSWORD', value);
-        tempData[confirmPassIndex].error = confirmPassValidation.isEmpty ? "EMPTY" : confirmPassValidation.isContainsFormatError ? "FORMAT" : null;
-      }
+      // if (confirmPassIndex >= 0) {
+      //   const confirmPassValue = tempData[confirmPassIndex].value;
+      //   const confirmPassValidation = validateField(confirmPassValue.toString(), 'CONFIRM_PASSWORD', value);
+      //   tempData[confirmPassIndex].error = confirmPassValidation.isEmpty ? "EMPTY" : confirmPassValidation.isContainsFormatError ? "FORMAT" : null;
+      // }
 
       tempData[index].error = (validateResult.isEmpty ? "EMPTY" : validateResult.isContainsFormatError ? "FORMAT" : null);
     } 
     //Confirm Password Validation
     else if (field.format_validation === 'CONFIRM_PASSWORD') {
+        // validateResult = validateField(value, 'CONFIRM_PASSWORD', value.toString());
+        // tempData[index].value = value;
+        // tempData[index].error = validateResult.isEmpty ? "EMPTY" : validateResult.isContainsFormatError ? "FORMAT" : null;
 
       const passwordIndex = tempData.findIndex((field) => field.format == 'PASSWORD');
       

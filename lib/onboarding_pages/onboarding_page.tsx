@@ -97,7 +97,7 @@ const OnBoardingPage = () => {
             <ButtonField textValue = {'Contact Us'} />
           </Flex>
         </Flex>
-        <Button w = {'62px'} h = {'40px'} isLoading={buttonLoader} gap = {'5px'} onClick = {handleSubmit} isDisabled = {!selectedOption} borderWidth = {'1px'} borderRadius = {'6px'} bg={BUTTON_LINEAR_RIGHT_COLOR}  /* bgGradient = {`linear(180deg, ${BUTTON_LINEAR_LEFT_COLOR}, ${BUTTON_LINEAR_RIGHT_COLOR})`} */ borderColor = {FILE_BORDER_COLOR}>
+        <Button w = {'100px'} h = {'40px'} isLoading={buttonLoader} gap = {'5px'} onClick = {handleSubmit} isDisabled = {!selectedOption} borderWidth = {'1px'} borderRadius = {'6px'} bg={BUTTON_LINEAR_RIGHT_COLOR}  _hover = {{ bgGradient: `linear(180deg, ${BUTTON_LINEAR_LEFT_COLOR}, ${BUTTON_LINEAR_RIGHT_COLOR})`}} _focus={{}} _active={{}}  /* bgGradient = {`linear(180deg, ${BUTTON_LINEAR_LEFT_COLOR}, ${BUTTON_LINEAR_RIGHT_COLOR})`} */ borderColor = {FILE_BORDER_COLOR}>
           <Text color = {BUTTON_TEXT_COLOR} fontSize = {TEXT_FONT_SIZE} fontWeight = {BUTTON_TEXT_FONT_WEIGHT} >Next</Text>
         </Button>
       </Flex>

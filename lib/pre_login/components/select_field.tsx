@@ -13,13 +13,14 @@ export interface fields {
   format:FieldValidationType,
   errorMessage: string,
   w?:string,
-  h?:string
+  h?:string,
+  req?:boolean
 }
 
-const SelectField = ({label, value, values, placeholder, inputProps, format, isInValid, errorMessage, w = "100%", h = "44px"}:fields) => {
+const SelectField = ({label, value, values, placeholder, inputProps, format, isInValid, errorMessage, w = "100%", h = "44px", req = false}:fields) => {
   return (
     <FormControl gap = {'4px'} isInvalid = {isInValid}>
-      <FormLabel fontFamily = {PRE_LOGIN_LABEL_TEXT_FONT_FAMILY} fontSize = {PRE_LOGIN_LABEL_TEXT_FONT_SIZE} fontWeight = {PRE_LOGIN_LABEL_TEXT_FONT_WEIGHT}>{label}</FormLabel>
+      <FormLabel fontFamily = {PRE_LOGIN_LABEL_TEXT_FONT_FAMILY} fontSize = {PRE_LOGIN_LABEL_TEXT_FONT_SIZE} fontWeight = {PRE_LOGIN_LABEL_TEXT_FONT_WEIGHT}>{label} {req && <span style={{color:"red"}}>*</span>} </FormLabel>
       <Select 
         {...inputProps}        
         borderWidth = {'1px'} 

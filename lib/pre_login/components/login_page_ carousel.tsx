@@ -144,10 +144,10 @@ const sliderSettings = {
   const carouselImageData = loginPagecarouselImageData;
 
     return (
-      <Box w="100%" h="100%"  overflow="hidden"  >
-      <Slider {...sliderSettings}  >
+      <Box w="100%" h="100%"  overflow="hidden">
+      <Slider {...sliderSettings}   >
         {carouselImageData.map((image, ) => (
-          <Flex key={image.id} position={"relative"} backgroundImage={image.src} bgRepeat={'no-repeat'} bgSize={'cover'} w='100%' maxW='100%' h={"100vh"} maxH="100vh" flexGrow={1} justifyContent='center' alignContent={'flex-end'} p={4}>
+          <Flex key={image.id} position={"relative"} backgroundImage={image.src} bgRepeat={'no-repeat'} bgPosition={"center"} bgSize={'cover'} w='100%' maxW='100%' h={"100vh"} maxH="100%" flexGrow={1} justifyContent='center' alignContent={'flex-end'} p={4}>
             <Flex mb={'70px'} textAlign="center" flexDir="column"  w="100%" justifyContent="center" color={BUTTON_BG} >
               <Text fontSize="32px" fontWeight={LABEL_TEXT_FONT_WEIGHT}> {image.heading}</Text>
               <Text mt="12px"fontSize="20px" fontWeight={TEXT_FONT_WEIGHT}> {image.text}</Text>

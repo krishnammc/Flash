@@ -284,18 +284,18 @@ console.log(data)
             <Text color = {PRE_LOGIN_ALTERNATE_BUTTON_TEXT_COLOR} fontFamily = {PRE_LOGIN_BUTTON_TEXT_FONT_FAMILY} fontSize = {PRE_LOGIN_BUTTON_TEXT_FONT_SIZE} fontWeight = {PRE_LOGIN_BUTTON_TEXT_FONT_WEIGHT}>Resend Code</Text>
           </Button>  */}
 
-<Flex flexDir = {'column'} gap = {'24px'} mt = {'-16px'} justifyContent = {'center'} alignItems = {'center'}>
-         
-         <Flex flexDir = {'row'} fontFamily ={PRE_LOGIN_PAGE_BODY_FONT_FAMILY} fontSize = {PRE_LOGIN_PAGE_BODY_FONT_SIZE} fontWeight = {PRE_LOGIN_PAGE_BODY_FONT_WEIGHT} w= '100%' justifyContent = {'center'} gap = {'8px'}>
-           <Text >Don’t receive the email? Try again in</Text>
-           <Text fontWeight = {'700'}>Time: {minutes}:{seconds.toString().padStart(2, '0')} minutes</Text>
-         </Flex>
+        <Flex flexDir = {'column'} w={"100%"} gap = {'24px'} mt = {'-16px'} justifyContent = {'center'} alignItems = {'center'}>
+          
+          <Flex flexDir = {'row'} fontFamily ={PRE_LOGIN_PAGE_BODY_FONT_FAMILY} fontSize = {PRE_LOGIN_PAGE_BODY_FONT_SIZE} fontWeight = {PRE_LOGIN_PAGE_BODY_FONT_WEIGHT} w= '100%' justifyContent = {'center'} gap = {'8px'}>
+            <Text >Don’t receive the email? Try again in</Text>
+            <Text fontWeight = {'700'}>Time: {minutes}:{seconds.toString().padStart(2, '0')} minutes</Text>
+          </Flex>
 
-         <Button w = {'100%'} h = {'40px'} borderWidth = {'1px'} isDisabled={ timerDuration > 0 } onClick={resendConfirmationCode} borderColor = {PRE_LOGIN_BUTTON_BORDER_COLOR} borderRadius = {'4px'}  bg={BUTTON_LINEAR_RIGHT_COLOR} _hover = {{ bgGradient: `linear(180deg, ${BUTTON_LINEAR_LEFT_COLOR}, ${BUTTON_LINEAR_RIGHT_COLOR})`}}  >
-           <Text color = {PRE_LOGIN_BUTTON_TEXT_COLOR} fontFamily = {PRE_LOGIN_BUTTON_TEXT_FONT_FAMILY} fontSize = {PRE_LOGIN_BUTTON_TEXT_FONT_SIZE} fontWeight = {PRE_LOGIN_BUTTON_TEXT_FONT_WEIGHT}>Resend Code</Text>
-         </Button>
+          <Button w = {'100%'} h = {'40px'} borderWidth = {'1px'} isDisabled={ timerDuration > 0 } onClick={resendConfirmationCode} borderColor = {PRE_LOGIN_BUTTON_BORDER_COLOR} borderRadius = {'4px'}  bg={BUTTON_LINEAR_RIGHT_COLOR} _hover = {{ bgGradient: `linear(180deg, ${BUTTON_LINEAR_LEFT_COLOR}, ${BUTTON_LINEAR_RIGHT_COLOR})`}}  >
+            <Text color = {PRE_LOGIN_BUTTON_TEXT_COLOR} fontFamily = {PRE_LOGIN_BUTTON_TEXT_FONT_FAMILY} fontSize = {PRE_LOGIN_BUTTON_TEXT_FONT_SIZE} fontWeight = {PRE_LOGIN_BUTTON_TEXT_FONT_WEIGHT}>Resend Code</Text>
+          </Button>
 
-       </Flex>
+        </Flex>
 
         {/* <Flex onClick = {resendConfirmationCode} w={"100%"}>
           <ButtonField textValue = {"Resend Email"} />

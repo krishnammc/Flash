@@ -12,7 +12,7 @@ import useCurrentUser from '@/lib/hooks/use_currentuser';
 import Image from 'next/image';
 import { fonts } from '../app/chakra_theme';
 import ButtonField from '../components/button_field';
-import { BUTTON_TEXT_COLOR, TEXT_FONT_SIZE, BODY_TEXT_FONT_FAMILY } from '../app/app_constants';
+import { BUTTON_TEXT_COLOR, TEXT_FONT_SIZE, BODY_TEXT_FONT_FAMILY, BUTTON_LINEAR_LEFT_COLOR, BUTTON_LINEAR_RIGHT_COLOR } from '../app/app_constants';
 
 Amplify.configure(outputs);
 
@@ -78,7 +78,7 @@ function Dashboard() {
             }
           </Flex>
         </Flex>
-        <Button my={"10px"} w={"100%"} maxW={"200px"} isLoading={buttonLoader} bg={"yellow"} onClick={()=>{handleSignOut()}}>Sign out</Button>
+        <Button my={"10px"} w={"100%"} maxW={"200px"} isLoading={buttonLoader} bg={BUTTON_LINEAR_RIGHT_COLOR} _hover = {{ bgGradient: `linear(180deg, ${BUTTON_LINEAR_LEFT_COLOR}, ${BUTTON_LINEAR_RIGHT_COLOR})`}} borderRadius = {'4px'}  onClick={()=>{handleSignOut()}}>Sign out</Button>
       </Flex>
 
       <Flex  maxW={"100vw"} w={"100%"} h={"100%"} maxH={"80%"} px={"20px"} py={"10px"} gap={"10px"} flexDir={"column"} justifyContent={"space-between"}>

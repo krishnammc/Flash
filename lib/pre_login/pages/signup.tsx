@@ -65,6 +65,7 @@ const SignUpPage = () => {
   const [regError,setRegError]= useState<boolean>(false);
   const [demo,setDemo]=useState(false)
   const [formatError,setFormatError] = useState<boolean>(false);
+  const [phn,setPhn,phnTryAgain] = useSessionStorage<string>('phone_number');
   const [store, setStorage,tryAgain] = useSessionStorage<Record<string, string | string[] | number> | null>('Credential Info Form Values');
   const [basicstore, setBasicStorage,tryAgain2] = useSessionStorage<Record<string, string | string[] | number> | null>('Basic Info Form Values');
 
@@ -88,6 +89,7 @@ const SignUpPage = () => {
  const SubmitedAddressInfo = () => {
   setButtonLoader(true)
   tryAgain2();
+  phnTryAgain();
   setAddressInfo(false);
   setCredentialInfo(true);
   setButtonLoader(false)
@@ -185,7 +187,7 @@ const SignUpPage = () => {
           family_name:basicstore !== null && basicstore !== undefined && basicstore.first_name ? basicstore.first_name as string : "",
       
           given_name:basicstore !== null && basicstore !== undefined && basicstore.last_name ? basicstore.last_name as string : "",
-          phone_number:basicstore !== null && basicstore !== undefined && basicstore.phone_number ? basicstore.phone_number as string : "",
+          phone_number:(phn !== null && phn !==undefined && phn ?phn :'' )+(basicstore !== null && basicstore !== undefined && basicstore.phone_number ? basicstore.phone_number as string : ""),
           'custom:company_name': basicstore !== null && basicstore !== undefined && basicstore.company_name ? basicstore.company_name as string : "",
         },
         autoSignIn:true

@@ -1,6 +1,6 @@
-import { Flex, FormControl, FormLabel, Input, Select, Text } from '@chakra-ui/react'
-import React from 'react'
-import { INPUT_BORDER_COLOR, LABEL_COLOR, LABEL_TEXT_FONT_SIZE, LABEL_TEXT_FONT_WEIGHT, LIST_TEXT_FONT_SIZE, PAGE_HEADING_FONT_FAMILY, REQUIRED_SYMBOL_COLOR, TEXT_AREA_FONT_WEIGHT } from '../app/app_constants';
+import { Flex, FormControl, FormErrorMessage, FormLabel, Input, InputGroup, InputLeftElement, InputProps, Select, Text } from '@chakra-ui/react'
+import React, { ChangeEvent } from 'react'
+import { INPUT_BORDER_COLOR, LABEL_COLOR, LABEL_TEXT_FONT_SIZE, LABEL_TEXT_FONT_WEIGHT, LIST_TEXT_FONT_SIZE, PAGE_HEADING_FONT_FAMILY, PRE_LOGIN_ERROR_MESSAGE_FONT_FAMILY, PRE_LOGIN_ERROR_MESSAGE_FONT_SIZE, PRE_LOGIN_ERROR_MESSAGE_FONT_WEIGHT, PRE_LOGIN_INPUT_BACKGROUND_COLOR, PRE_LOGIN_INPUT_TEXT_COLOR, PRE_LOGIN_LABEL_TEXT_FONT_FAMILY, PRE_LOGIN_LABEL_TEXT_FONT_SIZE, PRE_LOGIN_LABEL_TEXT_FONT_WEIGHT, REQUIRED_SYMBOL_COLOR, TEXT_AREA_FONT_WEIGHT } from '../app/app_constants';
 import { FaRegQuestionCircle } from 'react-icons/fa';
 import ResponsiveTooltip from './tooltip';
 import { MdInfoOutline } from 'react-icons/md';
@@ -10,19 +10,27 @@ export interface fields {
     label:string,
     values:{id:string, value:string}[],
     helpText:string,
+    inputProps:InputProps,
     required:boolean,
     toolTip: string,
+    value:string,
+    onChangePhone: (event: ChangeEvent<HTMLSelectElement>) => void,
     textHelpText:string,
-    h?:string
+    h?:string,
+    inputValue:string | number | string[],
+    w?:string,
+    req?:boolean,
+    errorMessage:string
+    isInValid:boolean
 }
 
-const PhoneNumberField = ({label, helpText, textHelpText, values, h = '44px', required, toolTip}:fields) => {
+const PhoneNumberField = ({label, helpText,inputProps,value,inputValue, textHelpText,isInValid, values,errorMessage, h = '44px', required, w="100%", toolTip, onChangePhone,req=false}:fields) => {
 
   return (
-    <FormControl w = {'100%'}>
+    <FormControl w = {'100%'} isInvalid = {isInValid} >
       <Flex flexDir = {'row'}>
-        <FormLabel  fontFamily = {PAGE_HEADING_FONT_FAMILY} fontSize = {LABEL_TEXT_FONT_SIZE} fontWeight = {TEXT_AREA_FONT_WEIGHT} color = {LABEL_COLOR}>
-          {label}
+        <FormLabel title = {'Montserrat Medium 16px'} fontFamily = {PRE_LOGIN_LABEL_TEXT_FONT_FAMILY} fontSize = {PRE_LOGIN_LABEL_TEXT_FONT_SIZE} fontWeight = {PRE_LOGIN_LABEL_TEXT_FONT_WEIGHT}   >
+          {label} {req && <span style={{color:"red"}}>*</span>}
           { required ?
             <ResponsiveTooltip placement = 'auto' wrapperDivProps = {{ ml: '5px' }}>
               <Text as = {'span'} fontSize = {LABEL_TEXT_FONT_SIZE} fontWeight = {LABEL_TEXT_FONT_WEIGHT} color = {REQUIRED_SYMBOL_COLOR}>*</Text>
@@ -41,27 +49,38 @@ const PhoneNumberField = ({label, helpText, textHelpText, values, h = '44px', re
           }
         </FormLabel>
       </Flex> 
-      <Flex w = {'100%'} >
-        <Select w = {['40%','40%','40%','30%','30%']} placeholder = {helpText} h = {'44px'} borderWidth = {'1px'} borderRadius = {'4px 0 0 4px'} borderColor = {INPUT_BORDER_COLOR}>
-          {
+     
+        <InputGroup w = {w} >
+          <InputLeftElement maxW={"70px"} w={"100%"} height={"100%"} maxH={"44px"} alignItems={'center'} justifyContent={'center'}>
+          <Select  defaultValue={value} w={"100%"} height={"40px"} isInvalid={false} style={{paddingLeft:"10px", paddingRight:'5px', height:'40px'}}  onChange = {(e)=>{onChangePhone(e)}} bg={"#fff"}  color={"#000"} border={'none'}   borderWidth = {'1px'} borderRadius = {'4px'} borderColor = {INPUT_BORDER_COLOR}>
+          { 
             values.map((value) => {
               return (
-                <option key = {value.id} style = {{ width:"fit-content"}} value = {value.value} >{value.value}</option>
+                <option key = {value.id}  color={"#000"} style = {{ width:"fit-content"}} value = {value.value} >{value.value}</option>
               );
             })
           }       
         </Select>
+          </InputLeftElement>
         <Input
-          w = {'100%'}
+          w = {w}
           h = {h}      
-          fontWeight = {"400"}
-          fontSize = {'14px'}   
-          borderColor = {INPUT_BORDER_COLOR}
+          {...inputProps}
+          pl={"75px"}
+          fontFamily = {PRE_LOGIN_LABEL_TEXT_FONT_FAMILY} 
+          fontSize = {PRE_LOGIN_LABEL_TEXT_FONT_SIZE} 
+          fontWeight = {PRE_LOGIN_LABEL_TEXT_FONT_WEIGHT}
+          color = {PRE_LOGIN_INPUT_TEXT_COLOR}
+          bg = {PRE_LOGIN_INPUT_BACKGROUND_COLOR}
           placeholder = {textHelpText}
           borderRadius = {'0 4px 4px 0'}
-          p = {'12px'}                           
+          value = {inputValue}
         />
-      </Flex>
+        </InputGroup>
+
+
+      <FormErrorMessage fontFamily = {PRE_LOGIN_ERROR_MESSAGE_FONT_FAMILY} fontSize = {PRE_LOGIN_ERROR_MESSAGE_FONT_SIZE} fontWeight = {PRE_LOGIN_ERROR_MESSAGE_FONT_WEIGHT}>{errorMessage}</FormErrorMessage>   
+      
     </FormControl>
   );
 }

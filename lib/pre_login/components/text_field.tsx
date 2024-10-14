@@ -23,9 +23,14 @@ export interface fields {
 
 const TextField = ({label, type, value, values, placeholder, inputProps, format, isInValid, errorMessage, w = "100%", h = "44px",req=false}:fields) => {
   const [show, setShow] = useState(false);
+  const [handel,setHandel] = useState(false);
 
   //Password Hide and Show Function
   const handleClick = () => setShow(!show);
+
+  const handleevent = () => {
+    setHandel(true);
+  }
 
   return (
     <FormControl  gap = {'4px'} isInvalid = {isInValid}>
@@ -58,6 +63,7 @@ const TextField = ({label, type, value, values, placeholder, inputProps, format,
         <Input 
           {...inputProps}
           value = {value}
+          autoFocus
           type = {'text'} 
           title={'Montserrat Medium 16px'}
           placeholder = {placeholder} 
@@ -73,7 +79,7 @@ const TextField = ({label, type, value, values, placeholder, inputProps, format,
           fontSize = {PRE_LOGIN_LABEL_TEXT_FONT_SIZE} 
           fontWeight = {PRE_LOGIN_LABEL_TEXT_FONT_WEIGHT}
         />
-      }
+      }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
       <FormErrorMessage fontFamily = {PRE_LOGIN_ERROR_MESSAGE_FONT_FAMILY} fontSize = {PRE_LOGIN_ERROR_MESSAGE_FONT_SIZE} fontWeight = {PRE_LOGIN_ERROR_MESSAGE_FONT_WEIGHT}>{errorMessage}</FormErrorMessage>      
     </FormControl>
   )

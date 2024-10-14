@@ -7,9 +7,12 @@ import React, { useState } from 'react'
 function VerifiedPage() {
 
   const router = useRouter();
+  const [isSubmitting, setSubmitting] = useState(false);
 
   const onSubmitNext = () => {
-    router.push("/client/login")
+    setSubmitting(true);
+    router.push("/client/login");
+    
   }
 
   return (
@@ -19,7 +22,7 @@ function VerifiedPage() {
       <Text fontFamily = {PRE_LOGIN_PAGE_SUB_HEADING_FONT_FAMILY} fontSize = {PRE_LOGIN_PAGE_SUB_HEADING_FONT_SIZE} fontWeight = {PRE_LOGIN_PAGE_SUB_HEADING_FONT_WEIGHT}>You have successfully verified your Acccount</Text>
     </Flex>
     <Flex>
-      <Button onClick={onSubmitNext} w = {'100%'} h = {'40px'} type = {"submit"} bg={BUTTON_LINEAR_RIGHT_COLOR} _hover = {{ bgGradient: `linear(180deg, ${BUTTON_LINEAR_LEFT_COLOR}, ${BUTTON_LINEAR_RIGHT_COLOR})`}} borderRadius = {'4px'} >
+      <Button onClick={onSubmitNext} isLoading={isSubmitting} w = {'100%'} h = {'40px'} type = {"submit"} bg={BUTTON_LINEAR_RIGHT_COLOR} _hover = {{ bgGradient: `linear(180deg, ${BUTTON_LINEAR_LEFT_COLOR}, ${BUTTON_LINEAR_RIGHT_COLOR})`}} borderRadius = {'4px'} >
         <Text color = {PRE_LOGIN_BUTTON_TEXT_COLOR} fontFamily = {PRE_LOGIN_BUTTON_TEXT_FONT_FAMILY} fontSize = {PRE_LOGIN_BUTTON_TEXT_FONT_SIZE} fontWeight = {PRE_LOGIN_BUTTON_TEXT_FONT_WEIGHT} >Proceed to Login </Text>
       </Button>
     </Flex>

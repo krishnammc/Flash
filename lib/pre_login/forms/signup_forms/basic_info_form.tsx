@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import { BUTTON_BG, PRE_LOGIN_PAGE_HEADING_FONT_FAMILY, PRE_LOGIN_PAGE_HEADING_FONT_SIZE, PRE_LOGIN_PAGE_HEADING_FONT_WEIGHT, PRE_LOGIN_PAGE_SUB_HEADING_FONT_SIZE, PRE_LOGIN_PAGE_BODY_FONT_WEIGHT, PRE_LOGIN_PAGE_BODY_FONT_FAMILY, PRE_LOGIN_PAGE_BODY_FONT_SIZE, PRE_LOGIN_LINK_HOVER_COLOR, PRE_LOGIN_PAGE_HEADING_TEXT_COLOR, PRE_LOGIN_PAGE_SUB_HEADING_FONT_FAMILY, PRE_LOGIN_PAGE_SUB_HEADING_FONT_WEIGHT, PRE_LOGIN_BUTTON_TEXT_FONT_FAMILY, PRE_LOGIN_BUTTON_TEXT_FONT_SIZE, PRE_LOGIN_BUTTON_TEXT_FONT_WEIGHT } from '@/lib/app/app_constants';
 import { Flex, Heading, SimpleGrid, GridItem, Text, Alert, AlertIcon } from '@chakra-ui/react';
 import Link from 'next/link';
@@ -9,7 +9,8 @@ import ButtonField from '../../components/button_field';
 import useSessionStorage from '@/lib/hooks/use_sessionstorage';
 import { SignUpPageLabelDataValues } from '@/lib/interfaces/incorporation/pre_login_form/interfaces';
 import { fonts } from '@/lib/app/chakra_theme';
-import { PhoneNumberField } from '@aws-amplify/ui-react';
+import PhoneNumberField from '@/lib/components/phone_number_field';
+
 
 export const SignUpBasicInfoLabelData:SignUpPageLabelDataValues[] = [
   {
@@ -64,13 +65,24 @@ export const SignUpBasicInfoLabelData:SignUpPageLabelDataValues[] = [
   },
   {
     id: 'phone_number',
-    type: 'TEXT',
+    type: 'PHONE',
     label: 'Phone Number',
     help_text: 'Input your Phone Number',
     error_message: 'Please enter Phone Number',
     format_error_message: 'Phone Number should not contain text or any special characters',
     format_validation: "NONE",
-    values: []
+    values: [
+      {
+        id:'one',
+        value:"+91"
+      },{
+        id:'two',
+        value:"+65"
+      }, {
+        id:'three',
+        value:"+60"
+      }
+    ]
   }
 ]
 
@@ -90,10 +102,13 @@ const BasicInfoForm = ({onSubmit,buttonLoader}:BasicInfoProps) => {
     }))
   );
   //console.log(data)
-
+  
   const [isSubmitting, setSubmitting] = useState(false);
   const [store, setStorage] = useSessionStorage<Record<string, string | string[] | number> | null>('Basic Info Form Values');
+  const [phn,setPhn] = useSessionStorage<string>('phone_number');
+  const [phoneNumber,setPhoneNumber] = useState<string>(phn!==null && phn !==undefined ? phn : "+65");
 
+  
   useEffect(() => {
     const answerData = store ?? {};
     const newData = SignUpBasicInfoLabelData.map((field) => {
@@ -116,10 +131,14 @@ const BasicInfoForm = ({onSubmit,buttonLoader}:BasicInfoProps) => {
 
     let value: string | number = event.target.value;
     const validateResult = validateField(value.toString(), field.format_validation)
-    tempData[index].value = value;
+    tempData[index].value = event.target.value;
 
     tempData[index].error = (validateResult.isEmpty == true ? "EMPTY" : validateResult.isContainsFormatError == true ? "FORMAT" : null)
     setData(tempData)
+  }
+
+  const onChangePhnSelect = (event: ChangeEvent<HTMLSelectElement>) => {
+    setPhoneNumber(event.target.value)
   }
 
   const onApi = () => {
@@ -129,6 +148,7 @@ const BasicInfoForm = ({onSubmit,buttonLoader}:BasicInfoProps) => {
       return acc;
     }, {} as Record<string, string | string[] | number>);
     setStorage(result);
+    setPhn(phoneNumber);
     setSubmitting(false);
   };
 
@@ -137,7 +157,7 @@ const BasicInfoForm = ({onSubmit,buttonLoader}:BasicInfoProps) => {
     tempData.forEach((input) => {
       let value = SignUpBasicInfoLabelData.filter((e) => e.id == input.id);
       value.map((e) => {
-        if (e.type == "TEXT") {
+        if (e.type == "TEXT" || e.type == 'PHONE') {
           let value: number | string = input.value as number | string;
           const validateResult = validateField(value.toString(), e.format_validation)
           input.error = validateResult.isEmpty ? "EMPTY" : validateResult.isContainsFormatError ? "FORMAT" : null;
@@ -163,10 +183,9 @@ console.log(data)
         <Text title = {'Montserrat Regular 20px'} fontFamily = {PRE_LOGIN_PAGE_SUB_HEADING_FONT_FAMILY} fontSize = {PRE_LOGIN_PAGE_SUB_HEADING_FONT_SIZE} fontWeight = {PRE_LOGIN_PAGE_SUB_HEADING_FONT_WEIGHT}>Enter your identity information</Text>
       </Flex>
 
-   
       <form onSubmit = {handleSubmit}>
         {/* Sign Up Page Input Field */}
-        <SimpleGrid columns = {2} w = {'100%'} rowGap = {'16px'} columnGap = {'16px'}>
+        <SimpleGrid columns = {2} w = {'100%'} rowGap = {'16px'} columnGap = {'20px'}>
         {
           SignUpBasicInfoLabelData.map((e: SignUpPageLabelDataValues) => {
             let field = data.find((val) => val.id == e.id);
@@ -180,23 +199,14 @@ console.log(data)
               case "TEXT":
                 return (
                   <GridItem colSpan = {[2, 2, 1]} key = {e.id}>
-                    <TextField label = {e.label} req={true} value = {stateValue} placeholder = {e.help_text} format = {e.format_validation} inputProps = {{ onChange: event => onChange(event, e.id, e) }} isInValid = {isInValid} errorMessage = {errorMessage} />
+                    <TextField label = {e.label} req={true}  value = {stateValue} placeholder = {e.help_text} format = {e.format_validation} inputProps = {{ onChange: event => onChange(event, e.id, e) }} isInValid = {isInValid} errorMessage = {errorMessage} />
                   </GridItem>
                 );
               case "PHONE" :
                 return(
                   <GridItem colSpan = {[2, 2, 1]} key = {e.id}>
-                   <PhoneNumberField
-                      defaultDialCode="+91"
-                      label="Phone number"
-                      onChange={ (event)=>onChange(event, e.id, e) }
-                      value={stateValue}
-                      descriptiveText="Please enter your phone number"
-                      placeholder="234-567-8910"
-                    />
+                    <PhoneNumberField id={e.id} label={e.label} isInValid={isInValid} inputValue = {stateValue} errorMessage = {errorMessage} value={phoneNumber} values={e.values} req={true} inputProps = {{ onChange: event => onChange(event, e.id, e) }} onChangePhone={onChangePhnSelect} helpText={e.help_text}  required={false} toolTip={''} textHelpText={e.help_text}  />
                   </GridItem>
-
-                 
                 )
             }
           })

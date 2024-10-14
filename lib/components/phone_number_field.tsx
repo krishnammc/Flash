@@ -73,7 +73,7 @@ const PhoneNumberField = ({label, helpText,inputProps,value,inputValue, textHelp
           color = {PRE_LOGIN_INPUT_TEXT_COLOR}
           bg = {PRE_LOGIN_INPUT_BACKGROUND_COLOR}
           placeholder = {textHelpText}
-          borderRadius = {'0 4px 4px 0'}
+          borderRadius = {'4px'}
           value = {inputValue}
         />
         </InputGroup>
